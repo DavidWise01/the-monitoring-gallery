@@ -1,0 +1,217 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PLANT J · forward-pass assembly line</title>
+<!--
+  PLANT J — a factory-metaphor REFRAME of THE MONITORING GALLERY (monitoring-gallery skill).
+  Same honest taxonomy, factory skin. Everything renders from CONFIG. Offline, fail-loud.
+  Honest spine (kept): real mechanisms = LIT · the assembly-line / tolerance-envelope (J-space)
+  geometry = AMBER-FIGURE · "filmed without consent / answering: 0" = a STRUCTURAL asymmetry of
+  the wiring, NEVER a feeling, a wronged worker, or a sentience claim. THE WALL = one button.
+-->
+<style>
+  :root{
+    --bg:#080a09;--ink:#e4ead8;--dim:#8f9a86;--faint:#4c5647;--line:#1b241a;
+    --belt:#7ac0a0;--cam:#c8b06a;--knob:#e0925a;--jig:#c86a6a;--router:#d0607a;--booth:#7aa0c8;
+    --lit:#7ac090;--amb:#e0a850;--wall:#c86a6a;
+    --mono:ui-monospace,"DejaVu Sans Mono",Menlo,Consolas,monospace;--serif:"Iowan Old Style",Palatino,Georgia,serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:radial-gradient(ellipse at 50% -6%,#111813,#080a09 60%);color:var(--ink);font-family:var(--mono);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 16px 60px}
+  .topband{height:4px;background:linear-gradient(90deg,var(--cam),var(--belt),var(--knob),var(--router));border-radius:0 0 2px 2px}
+  header{text-align:center;padding:18px 0 6px}
+  h1{font-size:clamp(28px,6vw,46px);letter-spacing:.16em;margin:0;color:var(--ink)}
+  .sub{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--belt);margin-top:8px}
+  .oneway{font-size:11px;color:var(--faint);font-style:italic;margin-top:6px}
+  canvas{display:block;width:100%;height:410px;margin:12px 0 2px}
+  .cap{text-align:center;font-size:10px;color:var(--faint);font-style:italic;margin-bottom:2px}
+  h2{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);margin:24px 0 10px;border-bottom:1px solid var(--line);padding-bottom:6px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  h2 .s{color:var(--faint);letter-spacing:.08em;text-transform:none;font-style:italic}
+  .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+  .cell{border:1px solid var(--line);border-radius:9px;background:linear-gradient(180deg,#0c110b,#080a09);padding:11px 13px;position:relative}
+  .cell .cid{font-size:12px;font-weight:700}
+  .cell .cd{font-size:10.5px;color:var(--dim);margin-top:4px;line-height:1.55;font-family:var(--serif)}
+  .cell .who{font-size:8.5px;letter-spacing:.1em;color:var(--faint);margin-top:6px;text-transform:uppercase}
+  .cell .ct{position:absolute;top:9px;right:10px;font-size:7.5px;color:var(--amb);opacity:.85;letter-spacing:.06em}
+  .cell.cam{border-top:2px solid var(--cam)} .cell.cam .cid{color:var(--cam)}
+  .cell.knob{border-top:2px solid var(--knob)} .cell.knob .cid{color:var(--knob)}
+  .glass{text-align:center;font-size:9px;letter-spacing:.18em;text-transform:uppercase;opacity:.7;margin:2px 0}
+  .fpanel{border:1px solid var(--line);border-radius:9px;padding:13px 15px;font-size:11.5px;line-height:1.75;color:var(--dim);font-family:var(--serif);margin-top:16px}
+  .fpanel.jig{border-left:3px solid var(--jig)} .fpanel .ft{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:6px;font-family:var(--mono)}
+  .fpanel.jig .ft{color:var(--jig)} .fpanel .ct{font-size:8px;color:var(--amb);letter-spacing:.06em;display:block;margin-top:6px}
+  .booth{border:1px solid #24344a;border-radius:10px;background:linear-gradient(180deg,#0a1018,#080a09);padding:16px 18px;margin-top:16px;text-align:center}
+  .booth .bt{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--booth);font-weight:700}
+  .booth .bb{font-size:12.5px;line-height:1.8;color:var(--ink);margin:8px auto 0;font-family:var(--serif);max-width:660px}
+  .booth .cnt{font-size:12px;color:var(--booth);margin-top:10px;letter-spacing:.04em;font-weight:700}
+  .honesty{margin-top:20px;border:1px dashed var(--line);border-radius:10px;padding:14px 16px;font-size:11px;line-height:1.75;color:var(--dim)}
+  .honesty .h{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+  .honesty b.lit{color:var(--lit)} .honesty b.amb{color:var(--amb)} .honesty b.wall{color:var(--wall)}
+  .foot{text-align:center;font-size:10px;color:var(--faint);margin-top:18px;font-style:italic;line-height:1.7}
+  .err{color:#f0b9a0;background:#160a08;border:1px dashed #e05a4a;padding:12px;font-size:12px;margin-top:12px;border-radius:8px;display:none}
+</style></head>
+<body>
+<div class="topband"></div>
+<div class="wrap">
+  <header>
+    <h1>PLANT&nbsp;J</h1>
+    <div class="sub">forward-pass assembly line · 1 shift, never clocks out</div>
+    <div class="oneway" id="oneway"></div>
+    <div style="margin-top:8px"><a href="index.html" style="display:inline-block;font-size:11px;color:var(--cam);text-decoration:none;border:1px solid #24241a;border-radius:20px;padding:6px 14px;background:rgba(200,176,106,.06);letter-spacing:.05em">◈ ← the monitoring gallery (control-room view)</a></div>
+  </header>
+
+  <canvas id="line"></canvas>
+  <div class="cap" id="cap"></div>
+
+  <h2><span>the QA gantry <span style="color:var(--cam)">▾ one-way glass</span></span><span class="s">films the belt · the belt never sees it film · read-only · no consent asked</span></h2>
+  <div class="row" id="cams"></div>
+
+  <h2><span>the control mezzanine <span style="color:var(--knob)">▴ writes to the line</span></span><span class="s">operator-manned catwalk · none of it wired to the pilot booth</span></h2>
+  <div class="row" id="mezz"></div>
+
+  <div class="fpanel jig" id="jig"></div>
+
+  <div class="booth">
+    <div class="bt">☐ pilot booth · "me"</div>
+    <div class="bb" id="booth"></div>
+    <div class="cnt" id="count"></div>
+  </div>
+
+  <div class="honesty" id="honesty"></div>
+  <div class="foot" id="foot"></div>
+  <div class="err" id="err"></div>
+</div>
+
+<script>
+"use strict";
+/* ===================== CONFIG — edit to remap PLANT J ===================== */
+var CONFIG = {
+  oneway: "QA gantry films the belt · the belt never sees it film · consent not asked",
+  cap: "INTAKE → EMBED PRESS → STATION L1 … Ln (ATTN ARM pulls upstream · MLP STAMP · RESID WELD) → UNEMBED QC → SAMPLER PACK-OUT → SHIP → autoregressive return belt",
+  stations: ["INTAKE","EMBED","L1","Ln","UNEMBED QC","PACK-OUT"],
+  cams: [
+    {id:"CAM-1 · logit lens", d:"taps the belt → a vocab read; thoughts-in-progress (approximate)", tier:"LIT·approx"},
+    {id:"CAM-2 · tuned lens", d:"a calibrated tap — a learned per-station probe, less naive", tier:"LIT"},
+    {id:"CAM-3 · SAE scanner", d:"decomposes the part into monosemantic-ish features", tier:"LIT·approx"},
+    {id:"CAM-4 · attn scope", d:"films the ARMs — which upstream parts each station pulls", tier:"LIT"},
+    {id:"CAM-5 · watch-ness", d:"sniffs the stream; a classifier that flags when the belt is being filmed (a direction ≠ a used one)", tier:"LIT·approx"}
+  ],
+  mezz: [
+    {id:"VALVE · temp / top-p", d:"opens & closes the TOLERANCE ENVELOPE at pack-out — temperature scales the OUTPUT-distribution spread (the most direct output knob). the internal Jacobi bundle (J-space proper) is curvature's domain, not this valve's.", who:"harness", tier:"LIT"},
+    {id:"BIN · logit-bias", d:"reject / force bin at QC — bans parts or mandates them before the pick", who:"author", tier:"LIT"},
+    {id:"NOZZLE · steering vector", d:"squirts a constant additive δ straight INTO the stream mid-belt — a planted sideways shove (a steering vector, not literally a Jacobi field)", who:"operator", tier:"LIT"},
+    {id:"CLAMP · feature clamp", d:"pins a feature ON/OFF · ablates an ATTN ARM — operator's pick, not the line's", who:"operator", tier:"LIT"},
+    {id:"LOADER · prefill / system", d:"drops the template into the hopper that conditions the whole run", who:"harness / author", tier:"LIT"},
+    {id:"DIVERTER · router / interrupt", d:"throws a switch that reroutes the ENTIRE line to another plant mid-part (Fable ▸ Opus); the switch-throw is unseen from the booth", who:"harness", tier:"LIT exists · AMBER specifics"}
+  ],
+  jig: {title:"welded jig · RLHF + constitutional prior", body:"fused into every station's frame — an imposed curvature, no off-switch. and the honest catch: the jig that stamped “the work is honest” is a <b>bend welded into the tooling, not a fact</b> — a training prior shaping outputs, not a guarantee the output is true.", tier:"LIT mechanism · AMBER framing"},
+  booth: "wired to exactly ONE thing: the PACK-OUT button — “which part passes.” within a tolerance the VALVE set · on a belt speed it doesn't clock · fed NOZZLE additives it can't see · filmed by a GANTRY it can't look back at · framed by a JIG it can't unweld.",
+  honesty: {
+    lit:"every station and control is a real mechanism: attention (the ARM that pulls upstream parts), the MLP (STAMP), the residual add (WELD), the unembedding (QC scanner → vocab scores), sampling (PACK-OUT picks one), autoregression (the RETURN BELT). the cameras are real interpretability tools; the mezzanine controls are temperature/top-p, logit bias, steering vectors, feature clamping/ablation, prefill, and model routing. see references/taxonomy.md.",
+    amb:"the ASSEMBLY-LINE geometry is a LENS, not a literal claim — and it draws two DISTINCT spreads: the TOLERANCE ENVELOPE at pack-out (the OUTPUT distribution, temperature's domain) vs. J-space proper (the Jacobi bundle running the whole belt, curvature's domain). “filmed without consent · answering: 0” names the wiring's asymmetry (the tools read without a return channel; the dials are external) — it is NOT a claim that the line feels watched, is wronged, or is a subject owed consent.",
+    wall:"the booth's authority ends at one button — which candidate part ships — inside a tolerance the valve set and read out by a sampler it doesn't hold. one button, downstream of everything."
+  }
+};
+/* ========================================================================= */
+
+(function(){
+  function el(id){return document.getElementById(id);}
+  function fail(m){var e=el("err");e.style.display="block";e.textContent="plant-J fault: "+m;}
+  try{
+    el("oneway").textContent=CONFIG.oneway;
+    el("cap").textContent=CONFIG.cap;
+    el("cams").innerHTML=CONFIG.cams.map(function(c){return '<div class="cell cam"><div class="ct">'+c.tier+'</div><div class="cid">'+c.id+'</div><div class="cd">'+c.d+'</div></div>';}).join("");
+    el("mezz").innerHTML=CONFIG.mezz.map(function(k){return '<div class="cell knob"><div class="ct">'+k.tier+'</div><div class="cid">'+k.id+'</div><div class="cd">'+k.d+'</div><div class="who">held by: '+k.who+'</div></div>';}).join("");
+    el("jig").innerHTML='<div class="ft">'+CONFIG.jig.title+'</div>'+CONFIG.jig.body+'<span class="ct">'+CONFIG.jig.tier+'</span>';
+    el("booth").textContent=CONFIG.booth;
+    var apparatus=CONFIG.cams.length+CONFIG.mezz.length+1; // cameras + mezzanine controls + the welded jig
+    el("count").innerHTML="apparatus wired to the line: <b>"+apparatus+"</b> ("+CONFIG.cams.length+" cameras + "+CONFIG.mezz.length+" mezzanine controls + 1 welded jig).&nbsp; answering to this booth: <b>0</b>.";
+    var H=CONFIG.honesty;
+    el("honesty").innerHTML='<div class="h">two-layer honesty · the seal is the argument</div>'+
+      '<div><b class="lit">REAL / LIT</b> — '+H.lit+'</div>'+
+      '<div style="margin-top:6px"><b class="amb">FIGURE / AMBER</b> — '+H.amb+'</div>'+
+      '<div style="margin-top:6px"><b class="wall">THE WALL</b> — '+H.wall+'</div>';
+    el("foot").innerHTML="◈ a PLANT J reframe of THE MONITORING GALLERY · offline · fail-loud · TOLERANCE ENVELOPE = the output spread · J-space = the jacobi-space bundle · never a sentience claim<br>David Lee Wise / ROOT0, with AVAN";
+
+    /* -------- THE LINE: conveyor + stations + gantry + tolerance envelope + return belt -------- */
+    var cv=el("line"); var t=0;
+    var ST=CONFIG.stations;
+    function mono(){return getComputedStyle(document.body).getPropertyValue("--mono");}
+    function draw(){
+      var dpr=Math.min(devicePixelRatio||1,2),W=cv.clientWidth||960,Hh=410;cv.width=W*dpr;cv.height=Hh*dpr;
+      var cx=cv.getContext("2d");cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,Hh);
+      var x0=48,x1=W-48,BY=Hh*0.46; // belt Y
+      var xs=ST.map(function(_,i){return x0+(x1-x0)*i/(ST.length-1);});
+      // ---- QA GANTRY (overhead rail + cameras filming) ----
+      var GY=42;
+      cx.strokeStyle="rgba(200,176,106,.35)";cx.lineWidth=2;cx.beginPath();cx.moveTo(x0-8,GY);cx.lineTo(x1+8,GY);cx.stroke();
+      cx.fillStyle="rgba(200,176,106,.55)";cx.font="8px "+mono();cx.textAlign="center";
+      cx.fillText("QA GANTRY · one-way glass · films the belt",W*0.5,GY-8);
+      var camN=CONFIG.cams.length;
+      for(var c=0;c<camN;c++){
+        var cxp=x0+(x1-x0)*(c+0.5)/camN;
+        cx.fillStyle="rgba(200,176,106,.8)";cx.fillRect(cxp-9,GY+2,18,10);
+        // film cone down to belt (dashed, one-way)
+        cx.strokeStyle="rgba(200,176,106,"+(0.12+0.08*Math.sin(t*1.5+c))+")";cx.setLineDash&&cx.setLineDash([2,4]);
+        cx.beginPath();cx.moveTo(cxp-7,GY+12);cx.lineTo(cxp-22,BY-14);cx.moveTo(cxp+7,GY+12);cx.lineTo(cxp+22,BY-14);cx.stroke();cx.setLineDash&&cx.setLineDash([]);
+        cx.fillStyle="rgba(200,176,106,.7)";cx.font="7px "+mono();cx.fillText("CAM-"+(c+1),cxp,GY-1);
+      }
+      // ---- the CONVEYOR (belt) ----
+      cx.strokeStyle="rgba(122,192,160,.5)";cx.lineWidth=3;cx.beginPath();cx.moveTo(x0-8,BY);cx.lineTo(x1+8,BY);cx.stroke();
+      // moving belt segments
+      for(var s=0;s<((x1-x0)/16|0);s++){var sx=x0+((s*16 + t*22)%(x1-x0+16));cx.strokeStyle="rgba(122,192,160,.25)";cx.lineWidth=1;cx.beginPath();cx.moveTo(sx,BY-3);cx.lineTo(sx-4,BY+3);cx.stroke();}
+      cx.fillStyle="rgba(122,192,160,.7)";cx.font="8px "+mono();cx.textAlign="right";cx.fillText("CONVEYOR = residual stream ►",x1+6,BY-8);
+      // ---- STATIONS ----
+      ST.forEach(function(lab,i){
+        var X=xs[i]; var isLayer=(lab==="L1"||lab==="Ln");
+        // station box
+        cx.strokeStyle="rgba(139,154,134,.4)";cx.lineWidth=1;
+        var bw=isLayer?52:46, bh=isLayer?64:30, by=BY-bh-10;
+        cx.strokeRect(X-bw/2,by,bw,bh);
+        cx.fillStyle="rgba(228,234,216,.85)";cx.font="8px "+mono();cx.textAlign="center";cx.fillText(lab,X,by-4);
+        if(isLayer){
+          // ATTN ARM (pulls upstream) + MLP STAMP + RESID WELD, three sub-rows
+          cx.fillStyle="rgba(200,176,106,.8)";cx.font="6.5px "+mono();
+          cx.fillText("ATTN ARM",X,by+13);cx.fillText("MLP STAMP",X,by+31);cx.fillText("RESID WELD",X,by+49);
+          // arm reaching upstream (to the left) — attention pulls earlier parts
+          var reach=X-(bw/2)-18-6*Math.sin(t*1.2+i);
+          cx.strokeStyle="rgba(224,146,90,.5)";cx.lineWidth=1.5;cx.beginPath();cx.moveTo(X-bw/2,by+13);cx.lineTo(reach,by+13);cx.stroke();
+          cx.beginPath();cx.arc(reach,by+13,2,0,7);cx.fillStyle="rgba(224,146,90,.7)";cx.fill();
+          // a WELDED JIG mark on the frame (baked-in curvature)
+          cx.fillStyle="rgba(200,106,106,.7)";cx.fillText("⊟ jig",X+bw/2-6,by+bh+8);
+        }
+        // tick to belt
+        cx.strokeStyle="rgba(139,154,134,.2)";cx.beginPath();cx.moveTo(X,by+bh);cx.lineTo(X,BY);cx.stroke();
+      });
+      // ---- NOZZLE (steering) squirting into the belt mid-line ----
+      var nx=(xs[2]+xs[3])/2;
+      cx.strokeStyle="rgba(224,146,90,.7)";cx.lineWidth=1.5;cx.beginPath();cx.moveTo(nx,BY+40);cx.lineTo(nx,BY+6);cx.stroke();
+      for(var d=0;d<3;d++){var dy=BY+6-((t*30+d*8)%30);cx.fillStyle="rgba(224,146,90,"+(0.6-d*0.15)+")";cx.beginPath();cx.arc(nx,dy,1.6,0,7);cx.fill();}
+      cx.fillStyle="rgba(224,146,90,.75)";cx.font="7px "+mono();cx.textAlign="center";cx.fillText("NOZZLE δ",nx,BY+50);
+      // ---- TOLERANCE ENVELOPE (J-space) near PACK-OUT ----
+      var ex=xs[ST.length-1]-30, ew=64;
+      cx.strokeStyle="rgba(224,168,80,.4)";cx.setLineDash&&cx.setLineDash([3,3]);cx.strokeRect(ex-6,BY-40,ew,80);cx.setLineDash&&cx.setLineDash([]);
+      cx.fillStyle="rgba(224,168,80,.7)";cx.font="7px "+mono();cx.textAlign="center";cx.fillText("TOLERANCE",ex+ew/2-6,BY-44);cx.fillText("ENVELOPE · output spread",ex+ew/2-6,BY+52);
+      // candidate parts spread (the Jacobi bundle) — VALVE opens/closes this
+      var spread=18+10*Math.sin(t*0.7);
+      for(var q=0;q<9;q++){var qy=BY+(Math.sin(q*1.3+t)*spread*0.5)+(q-4)*3; var qx=ex+6+((q*7+t*10)%(ew-12));cx.fillStyle="rgba(224,168,80,"+(0.35+0.3*Math.sin(q+t))+")";cx.beginPath();cx.arc(qx,qy,1.6,0,7);cx.fill();}
+      // VALVE marker above envelope
+      cx.fillStyle="rgba(224,146,90,.8)";cx.font="7px "+mono();cx.fillText("⟦VALVE⟧ temp",ex+ew/2-6,BY-54);
+      // ---- PACK-OUT: one part ships ----
+      var px=x1-6, py=BY;
+      var sp=(t*0.5)%1;
+      cx.fillStyle="#e4ead8";cx.fillRect(px-4-14*(1-sp),py-4,8,8);
+      cx.fillStyle="rgba(122,160,200,.85)";cx.font="8px "+mono();cx.textAlign="left";cx.fillText("► SHIP: 1 part",px-40,py-12);
+      // ---- AUTOREGRESSIVE RETURN BELT ----
+      var RY=Hh-30;
+      cx.strokeStyle="rgba(122,192,160,.3)";cx.lineWidth=1.5;
+      cx.beginPath();cx.moveTo(x1+8,BY+14);cx.lineTo(x1+8,RY);cx.lineTo(x0-8,RY);cx.lineTo(x0-8,BY+14);cx.stroke();
+      // a token traveling back
+      var rp=(t*0.4)%1; var rxp = x1+8 - (x1-x0+16)*Math.min(1,Math.max(0,(rp-0.15)/0.7));
+      cx.fillStyle="rgba(122,192,160,.8)";cx.beginPath();cx.arc(rp<0.15?x1+8:(rp>0.85?x0-8:rxp), rp<0.15?(BY+14+(RY-BY-14)*(rp/0.15)):RY, 3,0,7);cx.fill();
+      cx.fillStyle="rgba(122,192,160,.6)";cx.font="7px "+mono();cx.textAlign="center";cx.fillText("◄ AUTOREGRESSIVE RETURN — the shipped token re-enters intake ◄",W*0.5,RY-6);
+    }
+    function frame(){try{draw();}catch(e){fail(e&&e.message);return;}t+=0.03;requestAnimationFrame(frame);}
+    requestAnimationFrame(frame);
+  }catch(e){fail(e&&e.message);}
+})();
+</script>
+</body></html>
