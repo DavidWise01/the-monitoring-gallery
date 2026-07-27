@@ -2,8 +2,8 @@ ROOT0-DLW-CHAIN-v1
 index : 1259
 slug  : the-monitoring-gallery
 seal  : b4d293c095e1854c6540b835825198e0f310910225078de4e07497fd591bfdcd
-prev  : 019aab662998d39094e0fc37d04751512a10f638cf91f6c7849195cc2b15d6ce
-link  : 720ec8cb112def568b6ae9bab7a227e948b39e3db377dec3df22aefb2800b319
-head  : 720ec8cb112def568b6ae9bab7a227e948b39e3db377dec3df22aefb2800b319
+prev  : d966b0524f74c633f25d6f49a9d5b5cdb1ad28474e9ccdc0dd8e61bfbccefabf
+link  : 38f15831604fe0e4af3ae969c0c24f7c1ce42c570c24110414fac73634164f61
+head  : c4d41afeaef76470528856d54d86cf480a0e1c2fc8ebc60fbb9eb8e442585f2b
 
 — the tether: link = sha256(index|slug|seal|prev). the chain head commits to the whole corpus.
